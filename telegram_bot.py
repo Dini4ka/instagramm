@@ -97,8 +97,8 @@ async def process_gender(message: types.Message, state: FSMContext):
     letter = data['time'][len(data['time']) - 1]
     if letter != 's' and letter != 'h' and letter != 'd' and letter != 'm':
         await state.finish()
-    links = data['link'].split(' ')
-    nicks = data['text'].split(' ')
+    links = data['link'].split('; ')
+    nicks = data['text'].split('; ')
     try:
         BOTS.type_comments(links,nicks,data['time'],int(data['count']))
         await message.answer("Выполнено")
