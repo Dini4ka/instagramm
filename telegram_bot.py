@@ -36,7 +36,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
 @dp.message_handler(commands=['start'])
 async def cmd_start(message: types.Message):
     await Form.link.set()
-    await message.reply("Привет! Укажи ссылку на пост")
+    await message.reply("Привет! Укажи ссылки на посты\nСсылки указывайте через пробле\n автор - @velord")
 
 
 
@@ -44,16 +44,18 @@ async def cmd_start(message: types.Message):
 @dp.message_handler(state=Form.link)
 async def process_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
+        print(message.text)
         data['link'] = message.text
 
     await Form.next()
-    await message.reply("Какой будет текст комментария ?")
+    await message.reply("Какой будет текст комментария ?\n Если ники - то укажите их через проебл")
 
 
 # Принимаем текст и узнаём периодичность
 @dp.message_handler(state=Form.text)
 async def process_age(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
+        print(message.text)
         data['text'] = message.text
     await Form.next()
 
@@ -64,6 +66,7 @@ async def process_age(message: types.Message, state: FSMContext):
 @dp.message_handler(state=Form.time)
 async def process_gender(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
+        print(message.text)
         data['time'] = message.text
     await Form.next()
 
@@ -74,6 +77,7 @@ async def process_gender(message: types.Message, state: FSMContext):
 @dp.message_handler(state=Form.count)
 async def process_gender(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
+        print(message.text)
         data['count'] = message.text
     await Form.next()
 
@@ -90,8 +94,16 @@ async def process_gender(message: types.Message, state: FSMContext):
     )
 
     await message.answer("Боты запущены, начинаю работу")
-    BOTS.type_comments(data['link'],data['text'],data['time'],int(data['count']))
-    await message.answer("Выполнено")
+    letter = data['time'][len(data['time']) - 1]
+    if letter != 's' and letter != 'h' and letter != 'd' and letter != 'm':
+        await state.finish()
+    links = data['link'].split(' ')
+    nicks = data['text'].split(' ')
+    try:
+        BOTS.type_comments(links,nicks,data['time'],int(data['count']))
+        await message.answer("Выполнено")
+    except:
+        await message.answer("Закрыты комментарии или скрытый профиль,\nтакже может быть вы неккоректно укзали время.\nПропишите  \start ,начните сначала  и будьте внимательны")
     await state.finish()
 
 
