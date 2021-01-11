@@ -19,13 +19,13 @@
 from time import sleep
 import pickle
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+import os
 import random
 
 # Запуск всех трёх ботов
 bot1 = webdriver.Firefox(executable_path='geckodriver.exe')
 bot2 = webdriver.Firefox(executable_path='geckodriver.exe')
-bot3 = webdriver.Firefox(executable_path='geckodriver.exe')
+#bot3 = webdriver.Firefox(executable_path='geckodriver.exe')
 
 
 class instabot:
@@ -35,13 +35,13 @@ class instabot:
         self.password_bot1 = 'Denis_71265'
         self.username_bot2 = 'petranna12'
         self.password_bot2 = 'Denis_71265'
-        self.username_bot3 = 'andrpan12'
-        self.password_bot3 = 'Denis_71265'
+        #self.username_bot3 = 'andrpan12'
+        #self.password_bot3 = 'Denis_71265'
 
         #авторизуем ботов
         bot1.get('https://www.instagram.com/')
         bot2.get('https://www.instagram.com/')
-        bot3.get('https://www.instagram.com/')
+        #bot3.get('https://www.instagram.com/')
         sleep(2)
 
         # Следующие строки говорят боту найти поля для заполнения логина и пароля.
@@ -49,21 +49,21 @@ class instabot:
         password_input_bot1 = bot1.find_element_by_name("password")
         username_input_bot2 = bot2.find_element_by_name("username")
         password_input_bot2 = bot2.find_element_by_name("password")
-        username_input_bot3 = bot3.find_element_by_name("username")
-        password_input_bot3 = bot3.find_element_by_name("password")
+        #username_input_bot3 = bot3.find_element_by_name("username")
+        #password_input_bot3 = bot3.find_element_by_name("password")
 
         # Заполнение логина и пароля
         username_input_bot1.send_keys(self.username_bot1)
         password_input_bot1.send_keys(self.password_bot1)
         username_input_bot2.send_keys(self.username_bot2)
         password_input_bot2.send_keys(self.password_bot2)
-        username_input_bot3.send_keys(self.username_bot3)
-        password_input_bot3.send_keys(self.password_bot3)
+        #username_input_bot3.send_keys(self.username_bot3)
+        #password_input_bot3.send_keys(self.password_bot3)
 
         # Вход
         login_button_bot1 = bot1.find_element_by_xpath("//button[@type='submit']")
         login_button_bot2 = bot2.find_element_by_xpath("//button[@type='submit']")
-        login_button_bot3 = bot3.find_element_by_xpath("//button[@type='submit']")
+        #login_button_bot3 = bot3.find_element_by_xpath("//button[@type='submit']")
         try:
             login_button_bot1.click()
             print('bot1 is ready')
@@ -74,33 +74,23 @@ class instabot:
             print('bot2 is ready')
         except:
             print('bot2 broken')
-        try:
-            login_button_bot3.click()
-            print('bot3 is ready')
-        except:
-            print('bot3 broken')
+        #try:
+        #    login_button_bot3.click()
+        #    print('bot3 is ready')
+        #except:
+        #   print('bot3 broken')
         # Берём куки или обновляем их
         pickle.dump(bot1.get_cookies(), open("cookies_bot_1.pkl", "wb"))
         pickle.dump(bot2.get_cookies(), open("cookies_bot_2.pkl", "wb"))
-        pickle.dump(bot3.get_cookies(), open("cookies_bot_3.pkl", "wb"))
+        #pickle.dump(bot3.get_cookies(), open("cookies_bot_3.pkl", "wb"))
 
         sleep(5)
 
 
-    def type_comments(self, link, comment_text, time, count):
+    def type_comments(self, links, nicks, time, count):
         cookies_for_bot1 = pickle.load(open("cookies_bot_1.pkl", "rb"))
         cookies_for_bot2 = pickle.load(open("cookies_bot_2.pkl", "rb"))
-        cookies_for_bot3 = pickle.load(open("cookies_bot_3.pkl", "rb"))
-        bot1.get(link)
-        bot2.get(link)
-        bot3.get(link)
-        for cookie in cookies_for_bot1:
-            bot1.add_cookie(cookie)
-        for cookie in cookies_for_bot2:
-            bot2.add_cookie(cookie)
-        for cookie in cookies_for_bot3:
-            bot3.add_cookie(cookie)
-        who_is_he = [bot1, bot2, bot3]
+        #cookies_for_bot3 = pickle.load(open("cookies_bot_3.pkl", "rb"))
         # Переведём время в секунды
         letter = time[len(time) - 1]
         if letter == 'm':
@@ -111,17 +101,29 @@ class instabot:
             time = int(time[0:len(time) - 1]) * 3600
         if letter == 'd':
             time = int(time[0:len(time) - 1]) * 3600 * 24
-        sleep(5)
-
         for i in range(count):
-            author = random.choice(who_is_he)
-            comment = author.find_element_by_class_name('Ypffh')
-            comment.click()
-            comment = author.find_element_by_class_name('Ypffh.focus-visible')
-            comment.send_keys(comment_text)
-            send_button = author.find_element_by_xpath('/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[3]/div/form/button')
-            send_button.click()
-            sleep(time)
-        sleep(2)
+            for link in links:
+                who_is_he = [bot1, bot2]
+                author = random.choice(who_is_he)
+                author.get(link)
+                #bot3.get(link)
+                if author == bot1:
+                    for cookie in cookies_for_bot1:
+                        author.add_cookie(cookie)
+                else:
+                    for cookie in cookies_for_bot2:
+                        author.add_cookie(cookie)
+                #for cookie in cookies_for_bot3:
+                #    bot3.add_cookie(cookie)
+                sleep(5)
+                comment_text = random.sample(nicks,random.randint(2,len(nicks)))
+                comment = author.find_element_by_class_name('Ypffh')
+                comment.click()
+                comment = author.find_element_by_class_name('Ypffh.focus-visible')
+                comment.send_keys(' '.join(comment_text))
+                send_button = author.find_element_by_xpath('/html/body/div[1]/section/main/div/div[1]/article/div[3]/section[3]/div/form/button')
+                send_button.click()
+                sleep(time)
+                sleep(2)
 
 BOTS = instabot()
