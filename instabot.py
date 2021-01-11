@@ -116,7 +116,7 @@ class instabot:
                 #for cookie in cookies_for_bot3:
                 #    bot3.add_cookie(cookie)
                 sleep(5)
-                comment_text = random.sample(nicks,random.randint(2,len(nicks)))
+                comment_text = random.sample(nicks,random.randint(1,len(nicks)))
                 comment = author.find_element_by_class_name('Ypffh')
                 comment.click()
                 comment = author.find_element_by_class_name('Ypffh.focus-visible')
