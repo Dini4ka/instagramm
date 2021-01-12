@@ -31,10 +31,10 @@ bot2 = webdriver.Firefox(executable_path='geckodriver.exe')
 class instabot:
 
     def __init__(self):
-        self.username_bot1 = 'dorozhka_ula'
-        self.password_bot1 = 'Denis_71265'
-        self.username_bot2 = 'petranna12'
-        self.password_bot2 = 'Denis_71265'
+        self.username_bot1 = 'wekolroman'
+        self.password_bot1 = '653922LiZa'
+        self.username_bot2 = 'pollymolly_'
+        self.password_bot2 = '653922liza'
         #self.username_bot3 = 'andrpan12'
         #self.password_bot3 = 'Denis_71265'
 
