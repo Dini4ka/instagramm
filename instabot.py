@@ -2,17 +2,17 @@
 # должна быть возможность указать ссылку на пост,
 # задать различный текст комментариев и временной интервал отправки (каждый час, каждые 7 мин и т.п.)
 
-# login1 : dorozhka_ula
+# login1 : 
 # number_phone1 : 79641411590
-# password1 : Denis_71265
+# password1 : 
 
-# login2 : petranna12
+# login2 : 
 # number_phone2 : 79605908231
-# password2 : Denis_71265
+# password2 : 
 
-# login3 : andrpan12
+# login3 : 
 # number_phone3 : 79258688784
-# password3 : Denis_71265
+# password3 : 
 
 # link : https://www.instagram.com/p/CJkAmg-h43m/
 
@@ -32,11 +32,11 @@ class instabot:
 
     def __init__(self):
         self.username_bot1 = 'wekolroman'
-        self.password_bot1 = '653922LiZa'
+        self.password_bot1 = ''
         self.username_bot2 = 'pollymolly_'
-        self.password_bot2 = '653922liza'
+        self.password_bot2 = ''
         #self.username_bot3 = 'andrpan12'
-        #self.password_bot3 = 'Denis_71265'
+        #self.password_bot3 = ''
 
         #авторизуем ботов
         bot1.get('https://www.instagram.com/')
